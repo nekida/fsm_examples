@@ -20,4 +20,4 @@ Example1: two leds, one button. Startup -> button polling -> led 1 on - led 2 of
 | LED1_ON_LED2_OFF  |     OK_FSM       |  LED1_OFF_LED2_ON   |
 | LED1_OFF_LED2_ON  |     OK_FSM       |       ALL_OFF       |
 |     ALL_OFF       |     OK_FSM       |      BUTTON_POLL    |
-+-------------------|------------------|---------------------+
+
