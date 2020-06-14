@@ -92,22 +92,22 @@ RET_CODES all_off(void);
 
 //связываем коды состояний с подпрограммами
 RET_CODES (*state_executer[])(void) = {
-	[STARTUP] 					= startup,
-	[BUTTON_POLL] 			= button_poll,
+	[STARTUP] 		= startup,
+	[BUTTON_POLL] 		= button_poll,
 	[LED1_ON_LED2_OFF] 	= led1_on_led2_off,
 	[LED1_OFF_LED2_ON] 	= led1_off_led2_on,
-	[ALL_OFF]						= all_off
+	[ALL_OFF]		= all_off
 };
 
 //заполняем таблицу
 //начальное згачение -> результат -> следующее состояние
 fsm_cell_t fsm_table[] = {
-	{STARTUP, 					OK_FSM, 		BUTTON_POLL},
-	{BUTTON_POLL, 			OK_FSM, 		LED1_ON_LED2_OFF},
-	{BUTTON_POLL, 			REPEAT_FSM, BUTTON_POLL},
+	{STARTUP, 		OK_FSM, 		BUTTON_POLL},
+	{BUTTON_POLL, 		OK_FSM, 		LED1_ON_LED2_OFF},
+	{BUTTON_POLL, 		REPEAT_FSM, 		BUTTON_POLL},
 	{LED1_ON_LED2_OFF, 	OK_FSM, 		LED1_OFF_LED2_ON},
 	{LED1_OFF_LED2_ON,	OK_FSM,			ALL_OFF},
-	{ALL_OFF,						OK_FSM,			BUTTON_POLL}
+	{ALL_OFF,		OK_FSM,			BUTTON_POLL}
 };
 /* USER CODE END 0 */
 
@@ -155,10 +155,10 @@ int main(void)
 		ret_code = state_executer[state]();
 		
 		for (iter = 0; iter < sizeof(fsm_table); iter++) {
-		if (fsm_table[iter].src_state == state && fsm_table[iter].ret_code == ret_code) {
-						state = fsm_table[iter].dst_state;
-						break;
-				}
+			if (fsm_table[iter].src_state == state && fsm_table[iter].ret_code == ret_code) {
+				state = fsm_table[iter].dst_state;
+				break;
+			}
 		}
     /* USER CODE BEGIN 3 */
   }
