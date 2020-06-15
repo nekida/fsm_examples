@@ -23,6 +23,7 @@ Example1: two leds, one button. Startup -> button polling -> led 1 on - led 2 of
 
 
 Example2: Событийный автомат на указателях на функции
+
 Значение event выставляется в Callback прерывания UART при выполнении определенных условий. 
 
 Шаги:
