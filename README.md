@@ -47,3 +47,14 @@ two leds, one button. Startup -> button polling -> led 1 on - led 2 off -> led 1
 |    state_send_answer    |        EVENT_NONE       |       state_idle        |
 
 По сути, вся работа сводится к выставлению своего рода флага в прерывании и последующей обработке, после чего флаг сбрасывается
+
+# Example1: 
+Конечный автомат с таблицей переходов
+
+Шаги:
+1. Создание событий (enum) EVENT_t
+2. Создание состояний (enum) STATE_t
+3. Функции реализации состояний: void func_state(void)
+4. Создание таблицы состояний: void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {[STATE][EVENT] = func_state
+5. Глобальные переменные STATE_t state и EVENT_t event с начальными значениями
+6. В основном цикле: transition_table[state][event]();
