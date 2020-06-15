@@ -29,10 +29,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
-#include "ppm.h"
 #include "crc16.h"
-#include "iface_mcu_pc.h"
-#include <string.h>
 #include "state_machine.h"
 /* USER CODE END Includes */
 
@@ -69,14 +66,14 @@ STATE_t state = STATE_IDLE;
 volatile EVENT_t event = EVENT_NONE;
 
 void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {
-	[STATE_IDLE]			[EVENT_RQST_PPM_STATUS] 	= state_rqst_ppm_status,
+	[STATE_IDLE]			[EVENT_RQST_STATUS] 		= state_rqst_status,
 	[STATE_IDLE]			[EVENT_INFORMATION_COMMAND]	= state_information_command,
 	[STATE_IDLE]			[EVENT_ECHO]			= state_echo,
 	[STATE_IDLE]			[EVENT_SEND_ANSWER]		= state_send_answer,
 	[STATE_IDLE]			[EVENT_NONE]			= state_idle,
-	[STATE_RQST_PPM_STATUS]		[EVENT_NONE]			= state_idle,
-	[STATE_INFORMATION_COMMAND]	[EVENT_NONE]			= state_check_answer_ppm,
-	[STATE_CHECK_ANSWER_PPM]	[EVENT_NONE]			= state_idle,
+	[STATE_RQST_STATUS]		[EVENT_NONE]			= state_idle,
+	[STATE_INFORMATION_COMMAND]	[EVENT_NONE]			= state_check_answer,
+	[STATE_CHECK_ANSWER]		[EVENT_NONE]			= state_idle,
 	[STATE_ECHO]			[EVENT_NONE]			= state_idle,
 	[STATE_SEND_ANSWER]		[EVENT_NONE]			= state_idle
 };
@@ -88,9 +85,7 @@ void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {
   */
 int main(void)
 {
-  /* USER CODE BEGIN 1 */
-	//Меняя частота HCLK в RCC - меняй длительность LE и перерасчитывай таймеры
-	
+  /* USER CODE BEGIN 1 */	
   /* USER CODE END 1 */
 
   /* Enable I-Cache---------------------------------------------------------*/
@@ -122,8 +117,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
-  ppm_init();		
+  HAL_UART_Receive_IT(&huart1, &rx_byte, 1);	
   /* USER CODE END 2 */
 
   /* Infinite loop */
