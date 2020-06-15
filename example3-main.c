@@ -69,16 +69,16 @@ STATE_t state = STATE_IDLE;
 volatile EVENT_t event = EVENT_NONE;
 
 void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {
-	[STATE_IDLE]								[EVENT_RQST_PPM_STATUS] 		= state_rqst_ppm_status,
-	[STATE_IDLE]								[EVENT_INFORMATION_COMMAND]	= state_information_command,
-	[STATE_IDLE]								[EVENT_ECHO]								= state_echo,
-	[STATE_IDLE]								[EVENT_SEND_ANSWER]					= state_send_answer,
-	[STATE_IDLE]								[EVENT_NONE]								= state_idle,
-	[STATE_RQST_PPM_STATUS]			[EVENT_NONE]								= state_idle,
-	[STATE_INFORMATION_COMMAND]	[EVENT_NONE]								= state_check_answer_ppm,
-	[STATE_CHECK_ANSWER_PPM]		[EVENT_NONE]								= state_idle,
-	[STATE_ECHO]								[EVENT_NONE]								= state_idle,
-	[STATE_SEND_ANSWER]					[EVENT_NONE]								= state_idle
+	[STATE_IDLE]			[EVENT_RQST_PPM_STATUS] 	= state_rqst_ppm_status,
+	[STATE_IDLE]			[EVENT_INFORMATION_COMMAND]	= state_information_command,
+	[STATE_IDLE]			[EVENT_ECHO]			= state_echo,
+	[STATE_IDLE]			[EVENT_SEND_ANSWER]		= state_send_answer,
+	[STATE_IDLE]			[EVENT_NONE]			= state_idle,
+	[STATE_RQST_PPM_STATUS]		[EVENT_NONE]			= state_idle,
+	[STATE_INFORMATION_COMMAND]	[EVENT_NONE]			= state_check_answer_ppm,
+	[STATE_CHECK_ANSWER_PPM]	[EVENT_NONE]			= state_idle,
+	[STATE_ECHO]			[EVENT_NONE]			= state_idle,
+	[STATE_SEND_ANSWER]		[EVENT_NONE]			= state_idle
 };
 /* USER CODE END 0 */
 
@@ -122,15 +122,15 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
-	ppm_init();		
+  HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
+  ppm_init();		
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		transition_table[state][event]();
+	transition_table[state][event]();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
