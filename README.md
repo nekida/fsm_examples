@@ -37,11 +37,11 @@ two leds, one button. Startup -> button polling -> led 1 on - led 2 off -> led 1
 Таблица состояний
 |    Текущее состояние    |          Событие        |   Следующее состояние   |
 |-------------------------|-------------------------|-------------------------|
-|        state_idle       |  EVENT_RQST_PPM_STATUS  |  state_rqst_ppm_status  |
+|        state_idle       |     EVENT_RQST_STATUS   |    state_rqst_status    |
 |        state_idle       |EVENT_INFORMATION_COMMAND|state_information_command|
 |        state_idle       |        EVENT_ECHO       |       state_echo        |
 |        state_idle       |     EVENT_SEND_ANSWER   |    state_send_answer    |
-|  state_rqst_ppm_status  |         EVENT_NONE      |       state_idle        |
+|    state_rqst_status    |         EVENT_NONE      |       state_idle        |
 |state_information_command|            ---          |    state_check_answer   |
 |    state_check_answer   |        EVENT_NONE       |       state_idle        |
 |    state_send_answer    |        EVENT_NONE       |       state_idle        |
@@ -59,3 +59,17 @@ two leds, one button. Startup -> button polling -> led 1 on - led 2 off -> led 1
 void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {[STATE][EVENT] = func_state
 5. Глобальные переменные STATE_t state и EVENT_t event с начальными значениями
 6. В основном цикле: transition_table[state][event] ();
+
+Таблица переходов на Си:
+void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {
+[STATE_IDLE]                  [EVENT_RQST_STATUS] 	= state_rqst_status,
+[STATE_IDLE]                  [EVENT_INFORMATION_COMMAND]   = state_information_command,
+[STATE_IDLE]                  [EVENT_ECHO]      		= state_echo,
+[STATE_IDLE]                  [EVENT_SEND_ANSWER]         	= state_send_answer,
+[STATE_IDLE]                  [EVENT_NONE]		= state_idle,
+[STATE_RQST_STATUS]	          [EVENT_NONE]        	= state_idle,
+[STATE_INFORMATION_COMMAND]   [EVENT_NONE]                  = state_check_answer,
+[STATE_CHECK_ANSWER]	[EVENT_NONE]		= state_idle,
+[STATE_ECHO]		[EVENT_NONE]		= state_idle,
+[STATE_SEND_ANSWER]		[EVENT_NONE]		= state_idle
+};
