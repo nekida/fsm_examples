@@ -7,7 +7,7 @@ void state_idle() {
 
 }
 
-void state_rqst_ppm_status() {
+void state_rqst_status() {
 	if( get_crc16_modbus() )
 		send_status();
 	else
@@ -38,7 +38,7 @@ void state_send_answer() {
 	event = EVENT_NONE;
 }
 
-void state_check_answer_ppm() {
+void state_check_answer() {
 	if (check_arrays())
 		send_answer(ERROR_NONE);
 	else
