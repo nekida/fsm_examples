@@ -19,10 +19,11 @@ Example1: two leds, one button. Startup -> button polling -> led 1 on - led 2 of
 |     BUTTON_POLL   |     REPEAT_FSM   |      BUTTON_POLL    |
 | LED1_ON_LED2_OFF  |     OK_FSM       |  LED1_OFF_LED2_ON   |
 | LED1_OFF_LED2_ON  |     OK_FSM       |       ALL_OFF       |
-|     ALL_OFF       |     OK_FSM       |      BUTTON_POLL    |
-
-
-
+|     ALL_OFF       |     OK_FSM       |      BUTTON_POLL    |  
+   
+   
+      
+          
 Example2: Событийный автомат на указателях на функции
 
 Значение event выставляется в Callback прерывания UART при выполнении определенных условий. 
