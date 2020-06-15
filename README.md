@@ -61,6 +61,7 @@ void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {[STATE][EVENT] = f
 6. В основном цикле: transition_table[state][event] ();
 
 Таблица переходов на Си:
+```C
 void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {
 [STATE_IDLE]                  [EVENT_RQST_STATUS] 	= state_rqst_status,
 [STATE_IDLE]                  [EVENT_INFORMATION_COMMAND]   = state_information_command,
