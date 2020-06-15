@@ -1,14 +1,10 @@
 #include "state_machine.h"
 
-extern uint8_t pc_uart_data_rx[37];
-extern volatile bool flg_tx_rx_complete;
-extern uint8_t ppm_spi_data_rx[32];
-extern uint8_t ppm_spi_data_tx[32];
 extern EVENT_t event;
 
 void *state_idle() {
-	if (event == EVENT_RQST_PPM_STATUS)
-		return state_rqst_ppm_status;
+	if (event == EVENT_RQST_STATUS)
+		return state_rqst_status;
 	if (event == EVENT_INFORMATION_COMMAND)
 		return state_information_command;
 	if (event == EVENT_ECHO)
@@ -20,8 +16,8 @@ void *state_idle() {
 }
 
 void *state_rqst_ppm_status() {
-	if ( (pc_uart_data_rx[2] | (pc_uart_data_rx[3] << 8) ) == get_crc16_modbus(pc_uart_data_rx, (LEN_MSG_REQUEST_STATUS_PPM_RX - 2)) )
-		send_ppm_status();
+	if (get_crc16_modbus() )
+		send_status();
 	else
 		send_answer(ERROR_CRC);
 	
@@ -37,7 +33,7 @@ void *state_echo() {
 }
 
 void *state_information_command() {
-	if ( (pc_uart_data_rx[35] | (pc_uart_data_rx[36] << 8) ) == get_crc16_modbus(pc_uart_data_rx, (LEN_MSG_INFORMATION_RX - 2)) ) {
+	if ( get_crc16_modbus() ) {
 		send_answer(ERROR_NONE);
 	} else
 		send_answer(ERROR_CRC);
@@ -53,10 +49,10 @@ void *state_send_answer() {
 }
 
 void *state_check_answer() {
-	if (ppm_check_tx_rx_arrays())
+	if (check_arrays())
 		send_answer(ERROR_NONE);
 	else
-		send_answer(ERROR_PPM_ANSWER);
+		send_answer(ERROR_ANSWER);
 	
 	event = EVENT_NONE;
 	return state_idle;
@@ -68,17 +64,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	if (huart == &huart1) {
 		pc_uart_data_rx[bytes_counter++] = rx_byte;
 		if (pc_uart_data_rx[0] == ADDR) {
-			if ( (bytes_counter == LEN_MSG_REQUEST_STATUS_PPM_RX) && (pc_uart_data_rx[1] == CODE_FUNC_REQUEST_STATUS_PPM) ) {
-				event = EVENT_RQST_PPM_STATUS;
+			if (bytes_counter == LEN_MSG_REQUEST) {
+				event = EVENT_RQST_STATUS;
 				bytes_counter = 0;
-			} else if (bytes_counter == LEN_MSG_INFORMATION_RX && pc_uart_data_rx[1] == CODE_FUNC_INFORMATION) {	
+			} else if (bytes_counter == LEN_MSG_INFORMATION) {	
 				event = EVENT_INFORMATION_COMMAND;
 				bytes_counter = 0;
-			} else if (bytes_counter == LEN_MSG_ECHO_RX && pc_uart_data_rx[1] == CODE_FUNC_ECHO) {
+			} else if (bytes_counter == LEN_MSG_ECHO) {
 				event = EVENT_ECHO;
 				bytes_counter = 0;
-			} else if ( bytes_counter > LEN_MSG_ECHO_RX && \
-						( (pc_uart_data_rx[1] != CODE_FUNC_REQUEST_STATUS_PPM) && (pc_uart_data_rx[1] != CODE_FUNC_INFORMATION) && (pc_uart_data_rx[1] != CODE_FUNC_ECHO) ) ) {
+			} else  {
 				event = EVENT_SEND_ANSWER;
 				bytes_counter = 0;
 			}
