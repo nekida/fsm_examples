@@ -1,5 +1,6 @@
 # fsm_examples
-#Example1: two leds, one button. Startup -> button polling -> led 1 on - led 2 off -> led 1 off - led 2 on -> all off -> button polling
+# Example1: 
+two leds, one button. Startup -> button polling -> led 1 on - led 2 off -> led 1 off - led 2 on -> all off -> button polling
 
 Шаги:
 1. Номера состояний (enum)
@@ -21,7 +22,8 @@
 | LED1_OFF_LED2_ON  |     OK_FSM       |       ALL_OFF       |
 |     ALL_OFF       |     OK_FSM       |      BUTTON_POLL    |    
           
-#Example2: Событийный автомат на указателях на функции
+# Example2: 
+Событийный автомат на указателях на функции
 
 Значение event выставляется в Callback прерывания UART при выполнении определенных условий. 
 
