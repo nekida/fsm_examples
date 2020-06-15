@@ -21,3 +21,22 @@ Example1: two leds, one button. Startup -> button polling -> led 1 on - led 2 of
 | LED1_OFF_LED2_ON  |     OK_FSM       |       ALL_OFF       |
 |     ALL_OFF       |     OK_FSM       |      BUTTON_POLL    |
 
+
+Example2: Событийный автомат на указателях на функции
+Значение event выставляется в Callback прерывания UART при выполнении определенных условий. 
+
+Шаги:
+1. 
+
+Таблица переходов
+|    Текущее состояние    |          Событие        |   Следующее состояние   |
+|-------------------------|-------------------------|-------------------------|
+|        state_idle       |  EVENT_RQST_PPM_STATUS  |  state_rqst_ppm_status  |
+|        state_idle       |EVENT_INFORMATION_COMMAND|state_information_command|
+|        state_idle       |        EVENT_ECHO       |       state_echo        |
+|        state_idle       |     EVENT_SEND_ANSWER   |    state_send_answer    |
+|  state_rqst_ppm_status  |         EVENT_NONE      |       state_idle        |
+|state_information_command|            ---          |    state_check_answer   |
+|    state_check_answer   |        EVENT_NONE       |       state_idle        |
+|    state_send_answer    |        EVENT_NONE       |       state_idle        |
+
