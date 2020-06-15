@@ -46,3 +46,4 @@ two leds, one button. Startup -> button polling -> led 1 on - led 2 off -> led 1
 |    state_check_answer   |        EVENT_NONE       |       state_idle        |
 |    state_send_answer    |        EVENT_NONE       |       state_idle        |
 
+По сути, вся работа сводится к выставлению своего рода флага в прерывании и последующей обработке, после чего флаг сбрасывается
