@@ -68,9 +68,9 @@ void (*const transition_table[STATE_MAX][EVENT_MAX])(void) = {
 [STATE_IDLE]                  [EVENT_ECHO]                  = state_echo,
 [STATE_IDLE]                  [EVENT_SEND_ANSWER]           = state_send_answer,
 [STATE_IDLE]                  [EVENT_NONE]                  = state_idle,
-[STATE_RQST_STATUS]	          [EVENT_NONE]                  = state_idle,
+[STATE_RQST_STATUS]           [EVENT_NONE]                  = state_idle,
 [STATE_INFORMATION_COMMAND]   [EVENT_NONE]                  = state_check_answer,
-[STATE_CHECK_ANSWER]	[EVENT_NONE]                  = state_idle,
-[STATE_ECHO]		[EVENT_NONE]                  = state_idle,
-[STATE_SEND_ANSWER]		[EVENT_NONE]                  = state_idle
+[STATE_CHECK_ANSWER]          [EVENT_NONE]                  = state_idle,
+[STATE_ECHO]                  [EVENT_NONE]                  = state_idle,
+[STATE_SEND_ANSWER]           [EVENT_NONE]                  = state_idle
 };
